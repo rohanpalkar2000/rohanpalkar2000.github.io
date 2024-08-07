@@ -5,16 +5,15 @@
 ### Projects 
 
 [Amazon Prime Sales Analysis](https://github.com/rohanpalkar2000/Amaazon_Prime_Sales_Analysis)
-<img src="![Uploading image.png…]()
-"/>
+<img src="![image](https://github.com/user-attachments/assets/06083186-5bc2-4613-8a6a-3d8b48eb64cb)"/>
 
 ---
 [Project 2 Title](/pdf/sample_presentation.pdf)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
-[Project 3 Title](http://example.com/)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[Project 3 Title](Data-Visualization-of-Bird-Strikes-between-2000-2011)
+<img src="![Uploading image.png…]()"/>
 
 ---
 
