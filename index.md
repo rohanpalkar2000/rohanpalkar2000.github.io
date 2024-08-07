@@ -5,8 +5,7 @@
 ### Projects 
 
 [Amazon Prime Sales Analysis](https://github.com/rohanpalkar2000/Amaazon_Prime_Sales_Analysis)
-<img src="![image](https://github.com/user-attachments/assets/06083186-5bc2-4613-8a6a-3d8b48eb64cb)"
-  />
+<img src="![image](https://github.com/user-attachments/assets/bf0aba59-4f64-4b06-bc88-c85f3fb66045)"/>
 
 ---
 [Project 2 Title](/pdf/sample_presentation.pdf)
