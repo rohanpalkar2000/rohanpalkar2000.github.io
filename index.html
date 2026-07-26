@@ -555,6 +555,42 @@
     flex-shrink:0;
   }
   .contact-list a:hover{color:var(--accent);}
+  .contact-list li a{flex:1; min-width:0; overflow-wrap:anywhere;}
+  .copy-btn{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--text-muted);
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:6px 10px;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:all .2s ease;
+  }
+  .copy-btn:hover, .copy-btn:focus-visible{border-color:var(--accent); color:var(--accent);}
+  .copy-btn.copied{border-color:var(--accent); color:var(--bg); background:var(--accent); font-weight:600;}
+
+  .back-to-top{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    width:44px; height:44px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--accent);
+    font-size:18px;
+    cursor:pointer;
+    z-index:150;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(10px);
+    transition:opacity .25s ease, transform .25s ease, border-color .2s ease;
+    box-shadow:0 15px 30px -12px rgba(0,0,0,0.6);
+  }
+  .back-to-top.show{opacity:1; visibility:visible; transform:translateY(0);}
+  .back-to-top:hover, .back-to-top:focus-visible{border-color:var(--accent);}
 
   form.contact-form{
     display:flex;
@@ -858,6 +894,7 @@
         <li>
           <span class="ico">@</span>
           <a href="mailto:rohanpalkar2000@gmail.com">rohanpalkar2000@gmail.com</a>
+          <button type="button" class="copy-btn" id="copyEmailBtn" data-email="rohanpalkar2000@gmail.com">Copy</button>
         </li>
         <li>
           <span class="ico">in</span>
@@ -886,6 +923,8 @@
   </footer>
 
 </main>
+
+<button id="backToTop" aria-label="Back to top" class="back-to-top">↑</button>
 
 <script>
   // mobile nav toggle
@@ -943,6 +982,39 @@
     });
   }, {threshold:0.3});
   bars.forEach(b => barIO.observe(b));
+
+  // copy email to clipboard
+  const copyBtn = document.getElementById('copyEmailBtn');
+  if(copyBtn){
+    copyBtn.addEventListener('click', async () => {
+      const email = copyBtn.dataset.email;
+      try{
+        await navigator.clipboard.writeText(email);
+      }catch(err){
+        const ta = document.createElement('textarea');
+        ta.value = email;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      const original = copyBtn.textContent;
+      copyBtn.textContent = 'Copied ✓';
+      copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = original; copyBtn.classList.remove('copied'); }, 1800);
+    });
+  }
+
+  // back-to-top button
+  const backToTop = document.getElementById('backToTop');
+  if(backToTop){
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('show', window.scrollY > 600);
+    }, {passive:true});
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({top:0, behavior: reduceMotion ? 'auto' : 'smooth'});
+    });
+  }
 
   // contact form -> mailto
   document.querySelector('.contact-form').addEventListener('submit', function(){
