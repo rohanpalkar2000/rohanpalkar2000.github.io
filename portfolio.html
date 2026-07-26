@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rohan Palkar — Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1720;
+    --panel:#152029;
+    --panel-2:#1B2732;
+    --line: rgba(231,236,239,0.10);
+    --paper:#EEF2F0;
+    --paper-2:#E4E9E6;
+    --teal:#3FA796;
+    --teal-soft: rgba(63,167,150,0.16);
+    --amber:#E8A33D;
+    --amber-soft: rgba(232,163,61,0.16);
+    --text-hi:#EDF1EF;
+    --text-lo: rgba(237,241,239,0.62);
+    --text-ink-hi:#101820;
+    --text-ink-lo: rgba(16,24,32,0.62);
+    --radius: 10px;
+    --maxw: 1080px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text-hi);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--teal); color:#0B1319; }
+
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.01em;}
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  /* ---------- scroll reveal ---------- */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(15,23,32,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .brand{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px; font-weight:600;
+    color:var(--text-hi);
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{ width:8px; height:8px; border-radius:50%; background:var(--teal); box-shadow:0 0 10px var(--teal); }
+  .navlinks{ display:flex; gap:2px; list-style:none; margin:0; padding:0; }
+  .navlinks a{
+    text-decoration:none; font-size:13px; font-family:'IBM Plex Mono', monospace;
+    color:var(--text-lo); padding:8px 14px; border-radius:6px;
+    transition:color .2s ease, background .2s ease;
+    position:relative;
+  }
+  .navlinks a:hover{ color:var(--text-hi); background:var(--panel-2); }
+  .navlinks a.active{ color:var(--teal); }
+  .navlinks a.active::after{
+    content:''; position:absolute; left:14px; right:14px; bottom:2px; height:1px; background:var(--teal);
+  }
+  .nav-toggle{ display:none; background:none; border:1px solid var(--line); color:var(--text-hi); width:38px; height:38px; border-radius:8px; font-size:18px; cursor:pointer; z-index:210; position:relative;}
+
+  /* ---------- mobile slide-in nav panel ---------- */
+  .nav-overlay{
+    position:fixed; inset:0; background:rgba(8,12,16,0.55); backdrop-filter:blur(2px);
+    opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s ease;
+    z-index:150;
+  }
+  .nav-overlay.open{ opacity:1; visibility:visible; }
+
+  @media (max-width: 760px){
+    .navlinks{
+      position:fixed; top:0; right:0; height:100%; width:min(78vw, 300px);
+      background:var(--panel); border-left:1px solid var(--line);
+      flex-direction:column; padding:84px 0 28px;
+      transform:translateX(100%); transition:transform .3s ease;
+      z-index:200; max-height:none; overflow:hidden;
+      box-shadow:-16px 0 40px -20px rgba(0,0,0,0.6);
+    }
+    .navlinks.open{ transform:translateX(0); max-height:none; }
+    .navlinks a{ padding:16px 28px; border-bottom:1px solid var(--line); border-radius:0; font-size:14px; }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding:110px 0 40px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; color:var(--teal);
+    display:inline-flex; align-items:center; gap:8px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{ content:'▸'; color:var(--amber); }
+  .section-title{ font-size:clamp(28px, 4vw, 40px); font-weight:600; margin-bottom:8px; }
+  .section-sub{ color:var(--text-lo); font-size:15px; max-width:560px; line-height:1.6; margin-bottom:48px;}
+
+  /* ================= HERO ================= */
+  .hero{
+    padding:150px 0 80px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(ellipse 80% 60% at 60% 10%, black, transparent 75%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative;
+    display:grid; grid-template-columns: 1.15fr 0.85fr; gap:56px; align-items:center;
+  }
+  @media (max-width: 860px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  .hero-kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--amber);
+    margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  }
+  .hero-kicker .blink{ width:7px; height:14px; background:var(--amber); animation:blink 1.1s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .hero h1{
+    font-size:clamp(38px, 6vw, 62px);
+    line-height:1.05;
+    font-weight:700;
+  }
+  .hero h1 span{ color:var(--teal); }
+  .hero p.lede{
+    margin-top:22px; font-size:17px; line-height:1.7; color:var(--text-lo); max-width:520px;
+  }
+  .hero-actions{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap; }
+  .btn{
+    font-family:'IBM Plex Mono', monospace; font-size:13.5px; font-weight:500;
+    padding:13px 22px; border-radius:8px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    cursor:pointer; border:none;
+  }
+  .btn-primary{ background:var(--teal); color:#08201C; }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 24px -8px rgba(63,167,150,0.55); }
+  .btn-ghost{ background:transparent; color:var(--text-hi); border:1px solid var(--line); }
+  .btn-ghost:hover{ border-color:var(--teal); color:var(--teal); transform:translateY(-2px); }
+
+  .hero-stats{ display:flex; gap:28px; margin-top:46px; flex-wrap:wrap; }
+  .stat b{ display:block; font-family:'Space Grotesk',sans-serif; font-size:26px; color:var(--text-hi); }
+  .stat span{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-lo); text-transform:uppercase; letter-spacing:.04em; }
+
+  /* --- portrait / signature dashboard card --- */
+  .portrait-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px;
+    position:relative;
+  }
+  .portrait-frame{
+    aspect-ratio: 1 / 1;
+    border-radius:12px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(63,167,150,0.35), transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(232,163,61,0.28), transparent 55%),
+      var(--panel-2);
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .portrait-frame img{ width:100%; height:100%; object-fit:cover; object-position:center 15%; }
+  .portrait-frame .avatar-fallback{
+    font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:72px; color:var(--text-hi); opacity:.85;
+  }
+  .portrait-tag{
+    position:absolute; bottom:14px; left:14px; right:14px;
+    background:rgba(15,23,32,0.72); backdrop-filter:blur(6px);
+    border:1px solid var(--line); border-radius:8px;
+    padding:9px 12px; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-hi);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .portrait-tag .live{ display:flex; align-items:center; gap:6px; color:var(--teal); }
+  .portrait-tag .live::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--teal); animation:pulse 1.6s ease infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1;} 50%{ opacity:.3;} }
+
+  .mini-chart{ display:flex; align-items:flex-end; gap:5px; height:44px; margin-top:16px; padding:0 4px; }
+  .mini-chart i{ flex:1; background:linear-gradient(180deg, var(--teal), transparent); border-radius:3px 3px 0 0; opacity:.85; transform-origin:bottom; animation:grow 1.1s ease-out both; }
+  .mini-chart i:nth-child(odd){ background:linear-gradient(180deg, var(--amber), transparent); }
+  @keyframes grow{ from{ transform:scaleY(0);} to{ transform:scaleY(1);} }
+
+  /* ================= EXPERIENCE ================= */
+  .timeline{ position:relative; padding-left:28px; }
+  .timeline::before{ content:''; position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--line); }
+  .tl-item{ position:relative; padding-bottom:44px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:''; position:absolute; left:-28px; top:4px; width:11px; height:11px; border-radius:50%;
+    background:var(--ink); border:2px solid var(--teal);
+  }
+  .tl-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+  .tl-role{ font-family:'Space Grotesk',sans-serif; font-size:19px; font-weight:600; }
+  .tl-period{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--amber); white-space:nowrap; }
+  .tl-org{ color:var(--teal); font-size:14px; font-weight:500; margin-bottom:12px; }
+  .tl-desc{ color:var(--text-lo); font-size:14.5px; line-height:1.7; margin:0 0 12px; }
+  .tl-tags{ display:flex; gap:8px; flex-wrap:wrap; }
+  .pill{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; padding:4px 10px; border-radius:20px;
+    background:var(--panel-2); border:1px solid var(--line); color:var(--text-lo);
+  }
+
+  /* ================= EDUCATION ================= */
+  .edu-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:18px; }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:26px;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .card:hover{ transform:translateY(-3px); border-color:rgba(63,167,150,0.4); }
+  .edu-card .deg{ font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:600; margin-bottom:4px;}
+  .edu-card .school{ color:var(--teal); font-size:14px; margin-bottom:10px; }
+  .edu-card .meta{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-lo); margin-bottom:12px; }
+  .edu-card p{ color:var(--text-lo); font-size:13.5px; line-height:1.6; margin:0; }
+
+  /* ================= PROJECTS ================= */
+  .proj-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:20px; }
+
+  .proj-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    display:flex; flex-direction:column; transition:transform .25s ease, border-color .25s ease;
+  }
+  .proj-card:hover{ transform:translateY(-5px); border-color:var(--teal); }
+  .proj-visual{
+    height:130px; position:relative; overflow:hidden;
+    background:var(--panel-2);
+    display:flex; align-items:flex-end; gap:6px; padding:18px 18px 0;
+  }
+  .proj-visual i{ flex:1; background:var(--teal); opacity:.35; border-radius:3px 3px 0 0; }
+  .proj-card:nth-child(2) .proj-visual i{ background:var(--amber); }
+  .proj-card:hover .proj-visual i{ opacity:.75; }
+  .proj-body{ padding:20px; display:flex; flex-direction:column; gap:10px; flex:1; }
+  .proj-body h3{ font-size:17px; }
+  .proj-body p{ color:var(--text-lo); font-size:13.5px; line-height:1.6; margin:0; flex:1; }
+  .proj-tags{ display:flex; gap:6px; flex-wrap:wrap; }
+  .proj-link{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--teal); text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; margin-top:4px;
+  }
+  .proj-link:hover{ text-decoration:underline; }
+
+  /* ================= CERTIFICATIONS ================= */
+  .cert-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:16px; }
+  .cert-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;
+    display:flex; gap:14px; align-items:flex-start;
+  }
+  .cert-badge{
+    width:42px; height:42px; border-radius:9px; flex:0 0 auto;
+    background:var(--teal-soft); border:1px solid rgba(63,167,150,0.4);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-weight:600; color:var(--teal); font-size:13px;
+  }
+  .cert-card:nth-child(3n-1) .cert-badge{ background:var(--amber-soft); border-color:rgba(232,163,61,0.4); color:var(--amber); }
+  .cert-name{ font-size:14.5px; font-weight:600; margin-bottom:4px; }
+  .cert-issuer{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-lo); }
+
+  /* ================= CONTACT ================= */
+  #contact{ padding-bottom:100px; }
+  .contact-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px;
+    padding:44px; display:grid; grid-template-columns:1fr 1fr; gap:40px;
+  }
+  @media (max-width:760px){ .contact-panel{ grid-template-columns:1fr; padding:28px; } }
+  .contact-links{ display:flex; flex-direction:column; gap:14px; margin-top:22px; }
+  .contact-link{
+    display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text-hi);
+    font-size:14.5px; padding:10px 0; border-bottom:1px solid var(--line);
+    transition:color .2s ease, gap .2s ease;
+  }
+  .contact-link:hover{ color:var(--teal); gap:16px; }
+  .contact-link .k{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-lo); width:64px; flex:0 0 auto; }
+
+  form{ display:flex; flex-direction:column; gap:14px; }
+  label{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-lo); margin-bottom:6px; display:block; }
+  input, textarea{
+    width:100%; background:var(--panel-2); border:1px solid var(--line); border-radius:8px;
+    padding:12px 14px; color:var(--text-hi); font-family:'Inter',sans-serif; font-size:14px;
+    outline:none; transition:border-color .2s ease;
+  }
+  input:focus, textarea:focus{ border-color:var(--teal); }
+  textarea{ resize:vertical; min-height:100px; }
+  .field{ display:flex; flex-direction:column; }
+  .submit-note{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--teal); min-height:18px; }
+
+  footer{
+    border-top:1px solid var(--line); padding:26px 0; text-align:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--text-lo);
+  }
+
+  :focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="brand"><span class="dot"></span>rohan_palkar<span style="color:var(--text-lo)">.analytics</span></div>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#home" class="nav-link">home</a></li>
+      <li><a href="#experience" class="nav-link">experience</a></li>
+      <li><a href="#education" class="nav-link">education</a></li>
+      <li><a href="#projects" class="nav-link">projects</a></li>
+      <li><a href="#certifications" class="nav-link">certifications</a></li>
+      <li><a href="#contact" class="nav-link">contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+  </nav>
+</header>
+<div class="nav-overlay" id="navOverlay"></div>
+
+<!-- ================= HERO / INTRO ================= -->
+<section id="home" class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-kicker">SELECT role FROM career WHERE focus = 'data'<span class="blink"></span></div>
+      <h1>Hi, I'm <span>Rohan Palkar</span> —<br>I turn raw data into decisions.</h1>
+      <p class="lede">Data Analyst with hands-on experience across Power BI, Tableau, SQL, and Python — turning messy datasets into dashboards that drive real business decisions. Based in Thane, currently working at the intersection of data and technology at HDFC Bank.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Let's talk →</a>
+        <a href="#projects" class="btn btn-ghost">View projects</a>
+        <!-- Add "Rohan_Palkar_Data_Analyst.pdf" next to this HTML file for this button to work -->
+        <a href="Rohan_Palkar_Data_Analyst.pdf" download class="btn btn-ghost" id="downloadCv">⭳ Download CV</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>2+</b><span>Years experience</span></div>
+        <div class="stat"><b>9.2K+</b><span>Records analyzed</span></div>
+        <div class="stat"><b>10+</b><span>Tools &amp; platforms</span></div>
+      </div>
+    </div>
+
+    <div class="portrait-card reveal">
+      <div class="portrait-frame">
+        <!-- Replace src below with your own photo, e.g. src="my-photo.jpg" -->
+        <img src="rohan_palkar.jpg" alt="Rohan Palkar profile photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="avatar-fallback" style="display:none;">RP</div>
+        <div class="portrait-tag">
+          <span>rohan_palkar.jpg</span>
+          <span class="live">live</span>
+        </div>
+      </div>
+      <div class="mini-chart" aria-hidden="true">
+        <i style="height:40%; animation-delay:.05s"></i>
+        <i style="height:70%; animation-delay:.1s"></i>
+        <i style="height:55%; animation-delay:.15s"></i>
+        <i style="height:90%; animation-delay:.2s"></i>
+        <i style="height:65%; animation-delay:.25s"></i>
+        <i style="height:80%; animation-delay:.3s"></i>
+        <i style="height:45%; animation-delay:.35s"></i>
+        <i style="height:75%; animation-delay:.4s"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">analytics.experience</div>
+      <h2 class="section-title">Where I've worked</h2>
+      <p class="section-sub">A quick log of the roles that shaped how I approach data — from cleaning it to presenting it to people who make decisions with it.</p>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-head">
+          <div class="tl-role">IT Officer</div>
+          <div class="tl-period">Jun 2025 — Present</div>
+        </div>
+        <div class="tl-org">HDFC Bank</div>
+        <p class="tl-desc">Conduct Vulnerability Assessment and Penetration Testing (VAPT) on web applications, networks, and systems. Prepare detailed VAPT reports covering vulnerability description, impact, CVSS score, proof of concept, and remediation steps. Run network scanning and enumeration to flag open ports, services, and misconfigurations, and collaborate with application teams to prioritize and fix security issues based on severity and business impact.</p>
+        <div class="tl-tags">
+          <span class="pill">VAPT</span><span class="pill">Network Scanning</span><span class="pill">Risk Assessment</span><span class="pill">Qualys</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-head">
+          <div class="tl-role">Machine Learning Engineer Intern</div>
+          <div class="tl-period">Aug 2024 — Feb 2025</div>
+        </div>
+        <div class="tl-org">Nanavati Max Super Speciality Hospital</div>
+        <p class="tl-desc">Implemented predictive machine learning algorithms in Python, increasing early disease detection accuracy by 15% and reducing diagnostic errors by 10% for healthcare professionals. Deployed AI/ML models for medical diagnostics, improving diagnostic accuracy by 20% and enhancing patient outcomes through data-driven healthcare solutions.</p>
+        <div class="tl-tags">
+          <span class="pill">Python</span><span class="pill">Machine Learning</span><span class="pill">Healthcare Analytics</span>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-head">
+          <div class="tl-role">Data Analyst Intern</div>
+          <div class="tl-period">Nov 2023 — Jun 2024</div>
+        </div>
+        <div class="tl-org">Cynthi'ans Edutech Pvt. Ltd.</div>
+        <p class="tl-desc">Prepared comprehensive datasets and designed Entity-Relationship diagrams, using data cleansing, modelling, and visualization to uncover three key business insights that shaped business strategy decisions. Analyzed and visualized data trends to deliver actionable insights, improving decision-making efficiency by 15% through detailed report generation.</p>
+        <div class="tl-tags">
+          <span class="pill">Data Modelling</span><span class="pill">ER Diagrams</span><span class="pill">Data Visualization</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section id="education">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">analytics.education</div>
+      <h2 class="section-title">Academic background</h2>
+      <p class="section-sub">The formal foundation behind the day-to-day analysis.</p>
+    </div>
+
+    <div class="edu-grid reveal">
+      <div class="card edu-card">
+        <div class="deg">MBA in Operations &amp; Data Science</div>
+        <div class="school">NMIMS University</div>
+        <div class="meta"><span>Jan 2026 — Dec 2027</span><span>In Progress</span></div>
+        <p>Pursuing a management-focused specialization blending operations strategy with data science applications.</p>
+      </div>
+      <div class="card edu-card">
+        <div class="deg">M.Sc. in Information Technology (Artificial Intelligence)</div>
+        <div class="school">University of Mumbai</div>
+        <div class="meta"><span>Aug 2022 — Aug 2024</span><span>CGPA 8.23</span></div>
+        <p>Focused on AI/ML systems, data engineering, and applied analytics.</p>
+      </div>
+      <div class="card edu-card">
+        <div class="deg">B.Sc. in Information Technology</div>
+        <div class="school">University of Mumbai</div>
+        <div class="meta"><span>Jul 2018 — May 2021</span><span>CGPA 9.25</span></div>
+        <p>Built the foundation in programming, databases, and information systems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">analytics.projects</div>
+      <h2 class="section-title">Selected projects</h2>
+      <p class="section-sub">A few pieces of analysis I'm proud of — click through for the full breakdown, code, or live dashboard.</p>
+    </div>
+
+    <div class="proj-grid reveal">
+      <div class="proj-card">
+        <div class="proj-visual" aria-hidden="true">
+          <i style="height:35%"></i><i style="height:60%"></i><i style="height:45%"></i><i style="height:80%"></i><i style="height:55%"></i><i style="height:70%"></i>
+        </div>
+        <div class="proj-body">
+          <h3>Zomato Restaurant Analysis</h3>
+          <p>Analyzed 9,551 restaurants across 15 countries and 141 cities using Power BI, SQL, Tableau, and Excel to uncover insights on cuisine distribution, pricing, and customer preferences. Delivered an interactive dashboard on ratings, cuisine trends, and pricing to support data-driven business strategy.</p>
+          <div class="proj-tags"><span class="pill">Power BI</span><span class="pill">SQL</span><span class="pill">Tableau</span><span class="pill">Excel</span></div>
+          <a href="https://github.com/rohanpalkar2000" target="_blank" rel="noopener" class="proj-link">View on GitHub →</a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-visual" aria-hidden="true">
+          <i style="height:50%"></i><i style="height:75%"></i><i style="height:40%"></i><i style="height:90%"></i><i style="height:60%"></i><i style="height:30%"></i>
+        </div>
+        <div class="proj-body">
+          <h3>SQL-Based Employee Management System</h3>
+          <p>Designed an SQL-based system managing 100+ employee records and automating HR operations like recruitment, payroll, and performance tracking. Implemented normalized, indexed RDBMS structures, boosting query performance by 20%, and built Power BI/Tableau reporting that cut manual data errors by 30%.</p>
+          <div class="proj-tags"><span class="pill">SQL</span><span class="pill">RDBMS</span><span class="pill">Power BI</span><span class="pill">ETL</span></div>
+          <a href="https://github.com/rohanpalkar2000" target="_blank" rel="noopener" class="proj-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CERTIFICATIONS ================= -->
+<section id="certifications">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">analytics.certifications</div>
+      <h2 class="section-title">Certifications</h2>
+      <p class="section-sub">Credentials that back up the day-to-day skill set.</p>
+    </div>
+
+    <div class="cert-grid reveal">
+      <div class="cert-card">
+        <div class="cert-badge">DA</div>
+        <div>
+          <div class="cert-name">Data Analyst Certification</div>
+          <div class="cert-issuer">ExcelR Academy · Aug 2024 – Dec 2024</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">DS</div>
+        <div>
+          <div class="cert-name">Data Science Master</div>
+          <div class="cert-issuer">PW Skills · Apr 2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">analytics.contact</div>
+      <h2 class="section-title">Let's work together</h2>
+      <p class="section-sub">Have a role, a project, or just want to talk data? My inbox is open.</p>
+    </div>
+
+    <div class="contact-panel reveal">
+      <div>
+        <h3 style="font-size:18px; margin-bottom:6px;">Get in touch</h3>
+        <p style="color:var(--text-lo); font-size:14px; line-height:1.6; margin:0;">Based in Wagle Estate, Thane — open to remote and on-site opportunities.</p>
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:rohanpalkar2000@gmail.com"><span class="k">email</span> rohanpalkar2000@gmail.com</a>
+          <a class="contact-link" href="tel:+918308639375"><span class="k">phone</span> +91 83086 39375</a>
+          <a class="contact-link" href="https://www.linkedin.com/in/rohanpalkar2000/" target="_blank" rel="noopener"><span class="k">linkedin</span> /in/rohanpalkar2000</a>
+          <a class="contact-link" href="https://github.com/rohanpalkar2000" target="_blank" rel="noopener"><span class="k">github</span> /rohanpalkar2000</a>
+        </div>
+      </div>
+
+      <form id="contactForm">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Jane Doe" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="jane@company.com" required>
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me a bit about the opportunity or project..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send message →</button>
+        <div class="submit-note" id="formNote"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> Rohan Palkar — built with care, indexed by curiosity.</div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // mobile nav panel toggle
+  const navToggle = document.getElementById('navToggle');
+  const navlinks = document.getElementById('navlinks');
+  const navOverlay = document.getElementById('navOverlay');
+
+  function setNavOpen(open){
+    navlinks.classList.toggle('open', open);
+    navOverlay.classList.toggle('open', open);
+    navToggle.textContent = open ? '✕' : '☰';
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  navToggle.addEventListener('click', () => setNavOpen(!navlinks.classList.contains('open')));
+  navOverlay.addEventListener('click', () => setNavOpen(false));
+  document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => setNavOpen(false)));
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navA = document.querySelectorAll('.nav-link');
+  const navObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navA.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector('.nav-link[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  sections.forEach(s => navObs.observe(s));
+
+  // gentle heads-up if the CV file hasn't been added yet
+  const cvBtn = document.getElementById('downloadCv');
+  fetch(cvBtn.getAttribute('href'), { method: 'HEAD' }).then(res => {
+    if (!res.ok) throw new Error();
+  }).catch(() => {
+    cvBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      alert('Add your CV file (e.g. "your-cv.pdf") next to this HTML file, then update the Download CV button\'s href to match its filename.');
+    });
+  });
+
+  // contact form (front-end only demo — connect to a backend or form service to actually send)
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const note = document.getElementById('formNote');
+    note.textContent = 'Message ready — connect this form to your email service to send it live.';
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
